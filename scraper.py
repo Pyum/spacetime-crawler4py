@@ -1,5 +1,4 @@
 import re
-import urllib.request
 from collections import defaultdict
 from urllib.parse import urlparse
 import nltk
@@ -106,12 +105,6 @@ def is_valid(url):
     # If you decide to crawl it, return True; otherwise return False.
     # There are already some conditions that return False.
     try:
-        _htmlRequest = urllib.request.urlopen(url)
-        _htmlCont = _htmlRequest.read().decode("utf8")
-        _soupHtml = BeautifulSoup(_htmlCont, "html.parser")
-        _urlTokenList = tokenize(_soupHtml.getText(), False)
-        if len(_urlTokenList) < 350:
-            return False
         parsed = urlparse(url)
         _splitParsed = parsed.path.split("/")
         for i in range(len(_splitParsed)):
