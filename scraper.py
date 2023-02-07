@@ -15,7 +15,7 @@ SubDomainsFoundDict = defaultdict(set) #Deliverable Q4
 
 
 def scraper(url, resp):
-    global SubDomainsFoundDict, PageWithMostWords, WordsList, SubDomainsFoundDict
+    global SubDomainsFoundDict, PageWithMostWords, WordsList, UniqueUrlSet
     links = extract_next_links(url, resp)
     _validLinks = [link for link in links if is_valid(link)]
     for _link in _validLinks:
@@ -25,15 +25,15 @@ def scraper(url, resp):
             SubDomainsFoundDict[_domain[0]].add(_link) #Filling SubDomainsFoundDict for deliverable Q4
 
     #Write to Files
-    uniqueUrlFile = open("UniqueUrlSet.txt" "w")
+    uniqueUrlFile = open("UniqueUrlSet.txt", "w")
     uniqueUrlFile.write(str(len(UniqueUrlSet)))
     uniqueUrlFile.close()
 
-    mostWordsFile = open("PageWithMostWords.txt" "w")
+    mostWordsFile = open("PageWithMostWords.txt", "w")
     mostWordsFile.write(PageWithMostWords[0] + " with " + str(PageWithMostWords[1]) + " words")
     mostWordsFile.close()
 
-    wordsListFile = open("WordsList.txt" "w")
+    wordsListFile = open("WordsList.txt", "w")
     _counter = 0
     for _word in sorted(WordsList.items(), key = lambda x: (-x[1],x[0])):
         if _counter > 50:
@@ -42,8 +42,7 @@ def scraper(url, resp):
         _counter += 1
     wordsListFile.close()
 
-    subDomainFile = open("SubDomainsFoundDict.txt" "w")
-    _counter = 0
+    subDomainFile = open("SubDomainsFoundDict.txt", "w")
     for _domain in sorted(SubDomainsFoundDict.items(), key = lambda x: (x[0],x[1])):
         subDomainFile.write(_domain[0] + ": " + str(len(_domain[1])) + "\n")
     subDomainFile.close()
@@ -89,11 +88,11 @@ def tokenize(resp, _savewords):
     #Ignore the following words:
     _stopwords = stopwords.words('english')
     _datewords = {'january','jan','february','feb','march','mar','april','apr','may','june','jun','july','jul','august','aug','september','sept','october','oct','november','nov','december','dec','monday','mon','tuesday','tues','wednesday','wed','thursday','thurs','friday','fri','saturday','sat','sunday','sun'}
-    _regExp = re('[^a-zA-Z0-9]')
-    _tempList = _regExp.tokenize(resp)
+    _soupHtml = BeautifulSoup(resp.raw_response.content, 'html.parser')
+    _tempList = re.sub(r"[^a-zA-Z0-9]", " ", _soupHtml.get_text())
     if _savewords:
-        for _token in _tempList.lower():
-            if _token not in _stopwords and _token not in _datewords:
+        for _token in _tempList:
+            if _token.lower() not in _stopwords and _token.lower() not in _datewords:
                 _urlTokens.append(_token)
                 WordsList[_token] += 1 #Filling WordsList for deliverable Q3
 
