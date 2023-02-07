@@ -80,9 +80,8 @@ def extract_next_links(url, resp):
         print("resp.status code: ", resp.status, "\nError of: ", resp.error) #Print Error code and name
     return _urlList
 
-def tokenize(resp, _savewords):
+def tokenize(resp, _savewords): #Tokenize urls
     global WordsList
-    #Tokenize urls
     _urlTokens = list()
     _tempList = list()
     #Ignore the following words:
@@ -95,6 +94,8 @@ def tokenize(resp, _savewords):
             if _token.lower() not in _stopwords and _token.lower() not in _datewords:
                 _urlTokens.append(_token)
                 WordsList[_token] += 1 #Filling WordsList for deliverable Q3
+    #else:
+        #return [len(_tempList) > 350]
 
     return _urlTokens
 
