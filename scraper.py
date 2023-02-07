@@ -80,14 +80,15 @@ def extract_next_links(url, resp):
         print("resp.status code: ", resp.status, "\nError of: ", resp.error) #Print Error code and name
     return _urlList
 
-def tokenize(resp, _savewords): #Tokenize urls
+def tokenize(resp_text, _savewords): #Tokenize urls
     global WordsList
     _urlTokens = list()
     _tempList = list()
     #Ignore the following words:
     _stopwords = stopwords.words('english')
     _datewords = {'january','jan','february','feb','march','mar','april','apr','may','june','jun','july','jul','august','aug','september','sept','october','oct','november','nov','december','dec','monday','mon','tuesday','tues','wednesday','wed','thursday','thurs','friday','fri','saturday','sat','sunday','sun'}
-    _tempList = re.sub(r'[^a-zA-Z0-9]', " ", resp)
+    _regExp = re('[a-z]{2,}')
+    _tempList = _regExp.tokenize(resp_text)
     if _savewords:
         for _token in _tempList:
             if _token.lower() not in _stopwords and _token.lower() not in _datewords:
