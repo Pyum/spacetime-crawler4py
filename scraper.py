@@ -87,10 +87,10 @@ def tokenize(resp_text, _savewords): #Tokenize urls
     #Ignore the following words:
     _stopwords = stopwords.words('english')
     _datewords = {'january','jan','february','feb','march','mar','april','apr','may','june','jun','july','jul','august','aug','september','sept','october','oct','november','nov','december','dec','monday','mon','tuesday','tues','wednesday','wed','thursday','thurs','friday','fri','saturday','sat','sunday','sun'}
-    _regExp = re('[a-z]{2,}')
-    _tempList = _regExp.tokenize(resp_text)
+    _regExp = r"[^a-zA-Z0-9]"
+    _tempList = re.sub(_regExp," ",resp_text)
     if _savewords:
-        for _token in _tempList:
+        for _token in _tempList.split():
             if _token.lower() not in _stopwords and _token.lower() not in _datewords:
                 _urlTokens.append(_token)
                 WordsList[_token] += 1 #Filling WordsList for deliverable Q3
