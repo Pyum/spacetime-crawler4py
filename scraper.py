@@ -64,7 +64,7 @@ def extract_next_links(url, resp):
     _urlList =  list()
     if(599 >= resp.status >= 200 and resp.raw_response.content != None): #Check if we got onto the page and if it has content
         _soupHtml = BeautifulSoup(resp.raw_response.content, 'html.parser')
-        _urlTokenList = tokenize(_soupHtml.getText(), True)
+        _urlTokenList = tokenize(_soupHtml.get_text(), True)
         if len(_urlTokenList) > PageWithMostWords[1]:
             PageWithMostWords = [url, len(_urlTokenList)] #Filling PageWithMostWords for deliverable Q2
         for _link in _soupHtml.find_all("a"):
