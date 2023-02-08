@@ -94,9 +94,6 @@ def tokenize(resp_text, _savewords): #Tokenize urls
             if _token.lower() not in _stopwords and _token.lower() not in _datewords:
                 _urlTokens.append(_token)
                 WordsList[_token] += 1 #Filling WordsList for deliverable Q3
-    #else:
-        #return [len(_tempList) > 350]
-
     return _urlTokens
 
 def is_valid(url):
