@@ -80,7 +80,8 @@ def extract_next_links(url, resp):
         print("resp.status code: ", resp.status, "\nError of: ", resp.error) #Print Error code and name
     return _urlList
 
-def tokenize(resp_text, _savewords): #Tokenize urls
+def tokenize(resp_text, _savewords): 
+    #Tokenize urls
     global WordsList
     _urlTokens = list()
     _tempList = list()
