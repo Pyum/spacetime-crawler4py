@@ -81,8 +81,8 @@ def extract_next_links(url, resp):
     return _urlList
 
 def tokenize(resp_text, _savewords): 
-    #Tokenize urls
     global WordsList
+    #Tokenize urls
     _urlTokens = list()
     _tempList = list()
     #Ignore the following words:
