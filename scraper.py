@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 from urllib.parse import urlparse
 import nltk
+from nltk.tokenize import RegexpTokenizer
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 from urllib.parse import urlparse
@@ -64,7 +65,7 @@ def extract_next_links(url, resp):
     _urlList =  list()
     if(599 >= resp.status >= 200 and resp.raw_response.content != None): #Check if we got onto the page and if it has content
         _soupHtml = BeautifulSoup(resp.raw_response.content, 'html.parser')
-        _urlTokenList = tokenize(_soupHtml.getText(), True)
+        _urlTokenList = tokenize(_soupHtml.get_text(), True)
         if len(_urlTokenList) > PageWithMostWords[1]:
             PageWithMostWords = [url, len(_urlTokenList)] #Filling PageWithMostWords for deliverable Q2
         for _link in _soupHtml.find_all("a"):
@@ -80,7 +81,7 @@ def extract_next_links(url, resp):
         print("resp.status code: ", resp.status, "\nError of: ", resp.error) #Print Error code and name
     return _urlList
 
-def tokenize(resp, _savewords):
+def tokenize(resp_text, _savewords): 
     global WordsList
     #Tokenize urls
     _urlTokens = list()
@@ -88,14 +89,13 @@ def tokenize(resp, _savewords):
     #Ignore the following words:
     _stopwords = stopwords.words('english')
     _datewords = {'january','jan','february','feb','march','mar','april','apr','may','june','jun','july','jul','august','aug','september','sept','october','oct','november','nov','december','dec','monday','mon','tuesday','tues','wednesday','wed','thursday','thurs','friday','fri','saturday','sat','sunday','sun'}
-    _regExp = re('[^a-zA-Z0-9]')
-    _tempList = _regExp.tokenize(resp)
+    _regExp = RegexpTokenizer('[a-zA-Z]{2,}')
+    _tempList = _regExp.tokenize(resp_text)
     if _savewords:
         for _token in _tempList:
             if _token.lower() not in _stopwords and _token.lower() not in _datewords:
                 _urlTokens.append(_token)
                 WordsList[_token] += 1 #Filling WordsList for deliverable Q3
-
     return _urlTokens
 
 def is_valid(url):
