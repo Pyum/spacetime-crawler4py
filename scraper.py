@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 from urllib.parse import urlparse
 import nltk
+from nltk.tokenize import RegexpTokenizer
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 from urllib.parse import urlparse
@@ -88,7 +89,7 @@ def tokenize(resp_text, _savewords):
     #Ignore the following words:
     _stopwords = stopwords.words('english')
     _datewords = {'january','jan','february','feb','march','mar','april','apr','may','june','jun','july','jul','august','aug','september','sept','october','oct','november','nov','december','dec','monday','mon','tuesday','tues','wednesday','wed','thursday','thurs','friday','fri','saturday','sat','sunday','sun'}
-    _regExp = re('[a-zA-Z]{2,}')
+    _regExp = RegexpTokenizer('[a-zA-Z]{2,}')
     _tempList = _regExp.tokenize(resp_text)
     if _savewords:
         for _token in _tempList:
