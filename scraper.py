@@ -1,6 +1,5 @@
 import re
 from collections import defaultdict
-from urllib.parse import urlparse
 import nltk
 from nltk.tokenize import RegexpTokenizer
 nltk.download('stopwords')
